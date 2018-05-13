@@ -1,7 +1,6 @@
 'use strict'
 
 const gulp = require('gulp')
-const rename = require('gulp-rename')
 const uglify = require('gulp-uglify')
 const csso = require('gulp-csso')
 const del = require('del')
@@ -13,7 +12,6 @@ const DEST = './dist/'
 gulp.task('scripts', () => {
   return gulp.src('./script.js')
     .pipe(uglify())
-    .pipe(rename({ extname: '.min.js' }))
     .pipe(gulp.dest(DEST))
 })
 
@@ -31,7 +29,6 @@ gulp.task('pages', () => {
 gulp.task('styles', function () {
   return gulp.src('./styles.css')
     .pipe(csso())
-    .pipe(rename({ extname: '.min.js' }))
     .pipe(gulp.dest(DEST))
 })
 
