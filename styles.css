@@ -79,12 +79,19 @@ body {
     44px 0 0 1px #2eae32;
 }
 
-#terminal div {
+#terminal>div {
     max-width: 100%;
     overflow-wrap: break-word;
 }
 
-#terminal div:not(.output):before {
+div.help {
+  display: grid;
+  grid-template-columns: 2fr 10fr;
+  grid-column-gap: 12px;
+  width: 100%;
+}
+
+#terminal>div:not(.output):before {
     display: inline-block;
     color: #5ed7ff;
     content: '~$ ';
