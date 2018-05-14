@@ -1,0 +1,6 @@
+document.addEventListener("keydown",getKey);const terminal=document.getElementById("terminal");let lastLine=terminal.lastElementChild,input="";function getKey(a){parseKey(a.key),updateScroll()}function updateScroll(){terminal.scrollTop=terminal.scrollHeight}function parseKey(a){switch(a){case"Enter":const b=input.split(" ");parseCmd(...b),input="";break;case"Backspace":input=input.slice(0,input.length-1);break;default:input+=a;}lastLine.innerHTML=input+"<span></span>"}function parseCmd(a,...b){switch(console.log(b),a){case"help":output(`
+        <div class="help">
+          <div>ls</div><div>list directory contents</div>
+          <div>cat</div><div>concatenate and print files</div>
+        </div>
+      `);break;case"ls":output("profile contact projects");break;case"cat":switch(b[0]){case"profile":output("name: Panot Wongkhot");break;case"contact":output("panot.wongkhot@gmail.com");break;default:output("file not found.");}break;case"":println("");break;default:output("Unknow command");}}function println(a,b=!1){lastLine.innerHTML=lastLine.innerHTML.replace("<span></span>","");let c=document.createElement("div");c.innerHTML=a,b&&(c.className="output"),terminal.appendChild(c),lastLine=c}function output(a){println(a,!0),println("")}
