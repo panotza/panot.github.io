@@ -1,7 +1,7 @@
 'use strict'
 
 const gulp = require('gulp')
-const uglify = require('gulp-uglify')
+const minify = require('gulp-babel-minify')
 const csso = require('gulp-csso')
 const del = require('del')
 const htmlmin = require('gulp-htmlmin')
@@ -11,7 +11,7 @@ const DEST = './dist/'
 
 gulp.task('scripts', () => {
   return gulp.src('./script.js')
-    .pipe(uglify())
+    .pipe(minify())
     .pipe(gulp.dest(DEST))
 })
 
