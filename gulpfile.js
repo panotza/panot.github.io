@@ -10,7 +10,7 @@ const rev = require('gulp-rev')
 const revReplace = require('gulp-rev-replace')
 const path = require('path')
 
-const DEST = path.join(__dirname, 'dist')
+const DEST = path.join(__dirname, 'build')
 
 gulp.task('scripts', () => {
   return gulp.src('./script.js')
