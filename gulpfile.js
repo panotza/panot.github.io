@@ -44,6 +44,7 @@ gulp.task('styles', function () {
     .pipe(gulp.dest(DEST))
 })
 
+// Gulp task to replace revision files in html
 gulp.task('revreplace', () => {
   const manifest = gulp.src(path.join(DEST, 'rev-manifest.json'))
   return gulp.src(path.join(DEST, 'index.html'))
