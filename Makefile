@@ -1,2 +1,2 @@
 build:
-	gulp
+	yarn gulp

@@ -6,6 +6,9 @@
   "repository": "git@github.com:panotza/panot.me.git",
   "author": "panotza <panotza_ja@hotmail.com>",
   "license": "MIT",
+  "scripts": {
+     "gulp": "gulp"
+  },
   "dependencies": {
     "del": "^3.0.0",
     "gulp": "^3.9.1",
