@@ -1,11 +1,22 @@
-document.addEventListener('keydown', getKey)
+document.onkeypress = getPrintableKey
+document.onkeydown = getUniKey
 
 const terminal = document.getElementById('terminal')
 let lastLine = terminal.lastElementChild
 let input = ''
 
-function getKey (e) {
+function getPrintableKey (e) {
+  if (e.key === 'Enter') return
+  input = input + e.key
+  updateScreen()
+}
+
+function getUniKey (e) {
   parseKey(e.key)
+}
+
+function updateScreen () {
+  lastLine.innerHTML = input + '<span></span>'
   updateScroll()
 }
 
@@ -22,44 +33,31 @@ function parseKey (key) {
       break
     case 'Backspace':
       input = input.slice(0, input.length - 1)
+      updateScreen()
+      break
+    case 'ArrowUp':
+      // TODO: implement
       break
     default:
-      input = input + key
   }
-  lastLine.innerHTML = input + '<span></span>'
 }
 
 function parseCmd (cmd, ...args) {
-  console.log(args)
   switch (cmd) {
     case 'help':
-      output(`
-        <div class="help">
-          <div>ls</div><div>list directory contents</div>
-          <div>cat</div><div>concatenate and print files</div>
-        </div>
-      `)
+      help(...args)
       break
     case 'ls':
-      output('profile contact projects')
+      ls(...args)
       break
     case 'cat':
-      switch (args[0]) {
-        case 'profile':
-          output('name: Panot Wongkhot')
-          break
-        case 'contact':
-          output('panot.wongkhot@gmail.com')
-          break
-        default:
-          output('file not found.')
-      }
+      cat(...args)
       break
     case '':
       println('')
       break
     default:
-      output('Unknow command')
+      output(`Unknow command ${cmd}`)
   }
 }
 
@@ -77,4 +75,31 @@ function println (msg, isOutput = false) {
 function output (msg) {
   println(msg, true)
   println('')
+}
+
+// cmd function
+function help () {
+  output(`
+  <div class="help">
+    <div>ls</div><div>list directory contents</div>
+    <div>cat</div><div>concatenate and print files</div>
+  </div>
+`)
+}
+
+function cat (...args) {
+  switch (args[0]) {
+    case 'profile':
+      output('name: Panot Wongkhot')
+      break
+    case 'contact':
+      output('panot.wongkhot@gmail.com')
+      break
+    default:
+      output('file not found.')
+  }
+}
+
+function ls (...args) {
+  output('profile contact projects')
 }
