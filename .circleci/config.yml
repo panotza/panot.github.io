@@ -58,8 +58,10 @@ jobs:
               cd ..
 
               make build
-
               cp -a build/. out/.
+
+              echo "panot.me" > CNAME
+              cp CNAME out/.
 
               mkdir -p out/.circleci && cp -a .circleci/. out/.circleci/.
               cd out
