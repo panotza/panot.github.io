@@ -40,6 +40,7 @@ function parseKey (key) {
       break
     default:
   }
+  updateScreen()
 }
 
 function parseCmd (cmd, ...args) {
