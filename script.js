@@ -2,6 +2,8 @@ document.onkeypress = getPrintableKey
 document.onkeydown = getUniKey
 
 const terminal = document.getElementById('terminal')
+const history = []
+let historyIndex = 0
 let lastLine = terminal.lastElementChild
 let input = ''
 
@@ -12,7 +14,7 @@ function getPrintableKey (e) {
 }
 
 function getUniKey (e) {
-  parseKey(e.key)
+  parseKey(e)
 }
 
 function updateScreen () {
@@ -24,19 +26,35 @@ function updateScroll () {
   terminal.scrollTop = terminal.scrollHeight
 }
 
-function parseKey (key) {
-  switch (key) {
+function parseKey (e) {
+  switch (e.key) {
     case 'Enter':
+      if (input !== history[history.length - 1]) {
+        historyIndex = history.push(input) - 1
+      }
       const inputArgs = input.split(' ')
       parseCmd(...inputArgs)
       input = ''
       break
     case 'Backspace':
       input = input.slice(0, input.length - 1)
-      updateScreen()
       break
     case 'ArrowUp':
-      // TODO: implement
+      e.preventDefault()
+      if (history.length === 0) return
+      input = history[historyIndex--]
+      if (historyIndex < 0) historyIndex = 0
+      break
+    case 'ArrowDown':
+      e.preventDefault()
+      if (history.length === 0) return
+      historyIndex++
+      if (historyIndex > history.length - 1) {
+        historyIndex = history.length - 1
+        input = ''
+      } else {
+        input = history[historyIndex]
+      }
       break
     default:
   }
