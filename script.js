@@ -18,7 +18,7 @@ function getUniKey (e) {
 }
 
 function updateScreen () {
-  lastLine.innerHTML = input + '<span></span>'
+  lastLine.innerHTML = input.replace(/ /g, '&nbsp;') + '<span></span>'
   updateScroll()
 }
 
@@ -110,19 +110,20 @@ function cat (...args) {
   switch (args[0]) {
     case 'profile':
       output(`
-          name: Panot Wongkhot
-          birth date: 19/10/1992
-          language: Javascript, Go
-          Hobbie: Guitar, Song Composing
+          name: Panot Wongkhot<br>
+          birth date: 19/10/1992<br>
+          language: Javascript, Go<br>
+          Hobbie: Guitar, Song Composing<br>
+          Current job: Acoshift's subordinate
         `)
       break
     case 'contact':
       output('panot.wongkhot@gmail.com')
       break
-    case 'activites':
+    case 'activities':
       output(`
-          18/12/2017 - 16/3/2018 Codecamp TH #1 Graduated with All Homework Done
-          18/3 - 1/4/ 2018 Front-End Bootcamp สวทน (React + Redux Instructor)
+          18/12/2017 - 16/3/2018 Codecamp TH #1 Graduated with All Homework Done<br>
+          18/3 - 1/4/ 2018 Front-End Bootcamp สวทน (React + Redux Instructor)<br>
         `)
       break
     default:
