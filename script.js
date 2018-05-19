@@ -109,10 +109,21 @@ function help () {
 function cat (...args) {
   switch (args[0]) {
     case 'profile':
-      output('name: Panot Wongkhot')
+      output(`
+          name: Panot Wongkhot
+          birth date: 19/10/1992
+          language: Javascript, Go
+          Hobbie: Guitar, Song Composing
+        `)
       break
     case 'contact':
       output('panot.wongkhot@gmail.com')
+      break
+    case 'activites':
+      output(`
+          18/12/2017 - 16/3/2018 Codecamp TH #1 Graduated with All Homework Done
+          18/3 - 1/4/ 2018 Front-End Bootcamp สวทน (React + Redux Instructor)
+        `)
       break
     default:
       output('file not found.')
@@ -120,5 +131,5 @@ function cat (...args) {
 }
 
 function ls (...args) {
-  output('profile contact projects')
+  output('profile contact activities projects')
 }
