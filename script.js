@@ -32,7 +32,7 @@ function parseKey (e) {
       if (input !== history[history.length - 1]) {
         historyIndex = history.push(input) - 1
       }
-      const inputArgs = input.split(' ')
+      const inputArgs = input.trim().split(' ')
       parseCmd(...inputArgs)
       input = ''
       break
@@ -123,7 +123,7 @@ function cat (...args) {
     case 'activities':
       output(`
           18/12/2017 - 16/3/2018 Codecamp TH #1 Graduated with All Homework Done<br>
-          18/3 - 1/4/ 2018 Front-End Bootcamp สวทน (React + Redux Instructor)<br>
+          25/3 - 8/4/ 2018 Front-End Bootcamp สวทน (React + Redux Instructor)<br>
         `)
       break
     default:
