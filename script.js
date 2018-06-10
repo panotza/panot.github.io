@@ -110,9 +110,9 @@ function cat (...args) {
   switch (args[0]) {
     case 'profile':
       output(`
-          name: Panot Wongkhot<br>
-          birth date: 19/10/1992<br>
-          language: Javascript, Go<br>
+          Name: Panot Wongkhot<br>
+          Birth date: 19/10/1992<br>
+          Language: Javascript, Go<br>
           Hobbie: Guitar, Song Composing<br>
           Current job: Acoshift's subordinate
         `)
