@@ -4,9 +4,9 @@ document.onkeypress=getPrintableKey,document.onkeydown=getUniKey;const terminal=
     <div>cat</div><div>concatenate and print files</div>
   </div>
 `)}function cat(...a){switch(a[0]){case"profile":output(`
-          name: Panot Wongkhot<br>
-          birth date: 19/10/1992<br>
-          language: Javascript, Go<br>
+          Name: Panot Wongkhot<br>
+          Birth date: 19/10/1992<br>
+          Language: Javascript, Go<br>
           Hobbie: Guitar, Song Composing<br>
           Current job: Acoshift's subordinate
         `);break;case"contact":output("panot.wongkhot@gmail.com");break;case"activities":output(`
