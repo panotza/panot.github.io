@@ -12,4 +12,5 @@ document.onkeypress=getPrintableKey,document.onkeydown=getUniKey;const terminal=
         `);break;case"contact":output("panot.wongkhot@gmail.com");break;case"activities":output(`
           18/12/2017 - 16/3/2018 Codecamp TH #1 Graduated with All Homework Done<br>
           25/3 - 8/4/ 2018 Front-End Bootcamp สวทน (React + Redux Instructor)<br>
+          07/7 - 22/7/ 2018 Codecamp TH #2 (React + Redux Instructor)<br>
         `);break;default:output("file not found.");}}function ls(...a){output("profile contact activities projects")}
