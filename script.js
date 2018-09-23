@@ -27,6 +27,7 @@ function updateScroll () {
 }
 
 function parseKey (e) {
+  e.preventDefault()
   switch (e.key) {
     case 'Enter':
       if (input !== history[history.length - 1]) {
@@ -40,13 +41,11 @@ function parseKey (e) {
       input = input.slice(0, input.length - 1)
       break
     case 'ArrowUp':
-      e.preventDefault()
       if (history.length === 0) return
       input = history[historyIndex--]
       if (historyIndex < 0) historyIndex = 0
       break
     case 'ArrowDown':
-      e.preventDefault()
       if (history.length === 0) return
       historyIndex++
       if (historyIndex > history.length - 1) {
