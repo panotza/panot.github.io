@@ -13,30 +13,37 @@ const path = require('path')
 const DEST = path.join(__dirname, 'build')
 
 gulp.task('scripts', () => {
-  return gulp.src('./script.js')
+  return gulp
+    .src('./script.js')
     .pipe(minify())
     .pipe(rev())
     .pipe(gulp.dest(DEST))
-    .pipe(rev.manifest({
-      cwd: DEST,
-      merge: true // merge with the existing manifest if one exists
-    }))
+    .pipe(
+      rev.manifest({
+        cwd: DEST,
+        merge: true // merge with the existing manifest if one exists
+      })
+    )
     .pipe(gulp.dest(DEST))
 })
 
 // Gulp task to minify HTML files
 gulp.task('pages', () => {
-  return gulp.src(['./index.html'])
-    .pipe(htmlmin({
-      collapseWhitespace: true,
-      removeComments: true
-    }))
+  return gulp
+    .src(['./index.html'])
+    .pipe(
+      htmlmin({
+        collapseWhitespace: true,
+        removeComments: true
+      })
+    )
     .pipe(gulp.dest(DEST))
 })
 
 // Gulp task to minify CSS files
 gulp.task('styles', function () {
-  return gulp.src('./styles.css')
+  return gulp
+    .src('./styles.css')
     .pipe(csso())
     .pipe(rev())
     .pipe(gulp.dest(DEST))
@@ -47,8 +54,9 @@ gulp.task('styles', function () {
 // Gulp task to replace revision files in html
 gulp.task('revreplace', () => {
   const manifest = gulp.src(path.join(DEST, 'rev-manifest.json'))
-  return gulp.src(path.join(DEST, 'index.html'))
-    .pipe(revReplace({manifest: manifest}))
+  return gulp
+    .src(path.join(DEST, 'index.html'))
+    .pipe(revReplace({ manifest: manifest }))
     .pipe(gulp.dest(DEST))
 })
 
@@ -57,10 +65,5 @@ gulp.task('clean', () => del([DEST]))
 
 // Gulp task to minify all files
 gulp.task('default', ['clean'], () => {
-  runSequence(
-    'styles',
-    'scripts',
-    'pages',
-    'revreplace'
-  )
+  runSequence('styles', 'scripts', 'pages', 'revreplace')
 })
