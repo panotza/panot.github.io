@@ -26,8 +26,8 @@ body {
 }
 
 .terminal div.body {
-  font-size: 1em;
-  line-height: 1.2em;
+  font-size: 1rem;
+  line-height: 1.2rem;
   width: 70vw;
   height: 50vh;
   background-color: #0f3642;
@@ -55,7 +55,7 @@ body {
   line-height: 25px;
   text-align: center;
   color: #4c3436;
-  font-size: 1em;
+  font-size: 1rem;
   background: linear-gradient(0deg, #d8d8d8, #ececec);
   top: -25px;
   left: 0;
@@ -79,7 +79,7 @@ body {
     44px 0 0 1px #2eae32;
 }
 
-#terminal>div {
+.body > pre {
     max-width: 100%;
     overflow-wrap: break-word;
 }
@@ -91,15 +91,17 @@ div.help {
   width: 100%;
 }
 
-#terminal>div:not(.output):before {
+.body > pre:before {
     display: inline-block;
     color: #5ed7ff;
     content: '~$ ';
     padding-right: 8px;
 }
 
-#terminal div span:not(.output) {
-    animation:
+.blink::before {
+  height: 1.2rem;
+  content: '';
+  animation:
       typing 3.5s steps(40, end),
       blink-caret .75s step-end infinite;
     border-right: .15em solid #b4c4c6;

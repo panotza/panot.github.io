@@ -3,14 +3,31 @@ document.onkeydown = getUniKey
 
 const terminal = document.getElementById('terminal')
 const history = []
-let historyIndex = 0
+let curPos = 0
 let lastLine = terminal.lastElementChild
-let input = ''
+let i = 0
+let latest = 0
+
+const blink = document.createElement('span')
+blink.classList.add('blink')
+
+history[i] = []
+updateScreen()
 
 function getPrintableKey (e) {
   if (e.key === 'Enter') return
-  input = input + e.key
+  checkEditing()
+  history[i].splice(curPos, 0, e.key)
+  curPos++
   updateScreen()
+}
+
+// copy history command to newest for editing
+function checkEditing () {
+  if (i !== latest) {
+    history[latest] = [...history[i]]
+    i = latest
+  }
 }
 
 function getUniKey (e) {
@@ -18,50 +35,60 @@ function getUniKey (e) {
 }
 
 function updateScreen () {
-  lastLine.innerHTML = input.replace(/ /g, '&nbsp;') + '<span></span>'
-  updateScroll()
-}
-
-function updateScroll () {
+  lastLine.innerHTML = ''
+  lastLine.appendChild(document.createTextNode(history[i].slice(0, curPos).join('')))
+  lastLine.appendChild(blink)
+  lastLine.appendChild(document.createTextNode(history[i].slice(curPos, history[i].length).join('')))
   terminal.scrollTop = terminal.scrollHeight
 }
 
 function parseKey (e) {
   switch (e.key) {
     case 'Enter':
-      if (input !== history[history.length - 1]) {
-        historyIndex = history.push(input) - 1
+      // do not create new index when using old command
+      if (i !== latest) {
+        i = latest
+      } else {
+        i = latest = history.length
       }
-      const inputArgs = input.trim().split(' ')
-      parseCmd(...inputArgs)
-      input = ''
+      history[i] = []
+      curPos = 0
+      parseCommand(...history[i - 1].join('').split(' '))
       break
     case 'Backspace':
-      input = input.slice(0, input.length - 1)
+      if (curPos === 0) return
+      checkEditing()
+      history[i].splice(curPos - 1, 1)
+      curPos--
       break
     case 'ArrowUp':
       e.preventDefault()
-      if (history.length === 0) return
-      input = history[historyIndex--]
-      if (historyIndex < 0) historyIndex = 0
+      if (i <= 0) return
+      i--
+      curPos = history[i].length
       break
     case 'ArrowDown':
       e.preventDefault()
-      if (history.length === 0) return
-      historyIndex++
-      if (historyIndex > history.length - 1) {
-        historyIndex = history.length - 1
-        input = ''
-      } else {
-        input = history[historyIndex]
-      }
+      if (i >= history.length - 1) break
+      i++
+      curPos = history[i].length
+      break
+    case 'ArrowLeft':
+      if (curPos <= 0) return
+      curPos--
+      break
+    case 'ArrowRight':
+      if (curPos >= history[i].length) return
+      curPos++
       break
     default:
+      // return to prevent updateScreen to be called
+      return
   }
   updateScreen()
 }
 
-function parseCmd (cmd, ...args) {
+function parseCommand (cmd, ...args) {
   switch (cmd) {
     case 'help':
       help(...args)
@@ -81,12 +108,8 @@ function parseCmd (cmd, ...args) {
 }
 
 function println (msg, isOutput = false) {
-  lastLine.innerHTML = lastLine.innerHTML.replace('<span></span>', '')
-  let newLine = document.createElement('div')
+  let newLine = isOutput ? document.createElement('div') : document.createElement('pre')
   newLine.innerHTML = msg
-  if (isOutput) {
-    newLine.className = 'output'
-  }
   terminal.appendChild(newLine)
   lastLine = newLine
 }
@@ -99,11 +122,11 @@ function output (msg) {
 // cmd function
 function help () {
   output(`
-  <div class="help">
-    <div>ls</div><div>list directory contents</div>
-    <div>cat</div><div>concatenate and print files</div>
-  </div>
-`)
+    <div class="help">
+      <div>ls</div><div>list directory contents</div>
+      <div>cat</div><div>concatenate and print files</div>
+    </div>
+  `)
 }
 
 function cat (...args) {
