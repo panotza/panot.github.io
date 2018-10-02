@@ -45,15 +45,16 @@ function updateScreen () {
 function parseKey (e) {
   switch (e.key) {
     case 'Enter':
+      const s = history[i].join('')
       // do not create new index when using old command
-      if (i !== latest) {
+      if (i !== latest || history[i].length === 0) {
         i = latest
       } else {
         i = latest = history.length
       }
       history[i] = []
       curPos = 0
-      parseCommand(...history[i - 1].join('').split(' '))
+      parseCommand(s)
       break
     case 'Backspace':
       if (curPos === 0) return
@@ -88,7 +89,8 @@ function parseKey (e) {
   updateScreen()
 }
 
-function parseCommand (cmd, ...args) {
+function parseCommand (s) {
+  const [cmd, ...args] = s.split(' ')
   switch (cmd) {
     case 'help':
       help(...args)
