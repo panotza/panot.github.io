@@ -76,6 +76,5 @@ gulp.task('clean', () => del([DEST]))
 
 // Gulp task to minify all files
 gulp.task('default', ['clean'], () => {
-  // runSequence('critical', 'styles', 'scripts', 'pages', 'revreplace')
-  runSequence('critical', 'styles', 'scripts', 'revreplace')
+  runSequence('critical', 'styles', 'scripts', 'pages', 'revreplace')
 })

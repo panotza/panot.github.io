@@ -1,8 +1,5 @@
-@import url("https://fonts.googleapis.com/css?family=PT+Mono&subset=cyrillic");
-@import url("https://fonts.googleapis.com/css?family=PT+Sans&subset=cyrillic");
-
 html {
-  font-family: "PT Mono", monospace;
+  font-family: 'PT Mono', monospace;
   font-size: 16px;
 }
 
