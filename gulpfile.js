@@ -16,7 +16,7 @@ const DEST = path.join(__dirname, 'build')
 gulp.task('critical', () => {
   return gulp
     .src('./index.html')
-    .pipe(critical({ base: DEST, inline: true, css: ['./styles.css'] }))
+    .pipe(critical({ base: DEST, inline: true, minify: true, css: ['./styles.css'] }))
     .on('error', err => {
       console.error(err.message)
     })
@@ -76,5 +76,6 @@ gulp.task('clean', () => del([DEST]))
 
 // Gulp task to minify all files
 gulp.task('default', ['clean'], () => {
-  runSequence('critical', 'styles', 'scripts', 'pages', 'revreplace')
+  // runSequence('critical', 'styles', 'scripts', 'pages', 'revreplace')
+  runSequence('critical', 'styles', 'scripts', 'revreplace')
 })
