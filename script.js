@@ -36,9 +36,15 @@ function getUniKey (e) {
 
 function updateScreen () {
   lastLine.innerHTML = ''
-  lastLine.appendChild(document.createTextNode(history[i].slice(0, curPos).join('')))
+  lastLine.appendChild(
+    document.createTextNode(history[i].slice(0, curPos).join(''))
+  )
   lastLine.appendChild(blink)
-  lastLine.appendChild(document.createTextNode(history[i].slice(curPos, history[i].length).join('')))
+  lastLine.appendChild(
+    document.createTextNode(
+      history[i].slice(curPos, history[i].length).join('')
+    )
+  )
   terminal.scrollTop = terminal.scrollHeight
 }
 
@@ -110,7 +116,9 @@ function parseCommand (s) {
 }
 
 function println (msg, isOutput = false) {
-  let newLine = isOutput ? document.createElement('div') : document.createElement('pre')
+  let newLine = isOutput
+    ? document.createElement('div')
+    : document.createElement('pre')
   newLine.innerHTML = msg
   terminal.appendChild(newLine)
   lastLine = newLine

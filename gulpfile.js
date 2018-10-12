@@ -9,8 +9,19 @@ const runSequence = require('run-sequence')
 const rev = require('gulp-rev')
 const revReplace = require('gulp-rev-replace')
 const path = require('path')
+const critical = require('critical').stream
 
 const DEST = path.join(__dirname, 'build')
+
+gulp.task('critical', () => {
+  return gulp
+    .src('./index.html')
+    .pipe(critical({ base: DEST, inline: true, css: ['./styles.css'] }))
+    .on('error', err => {
+      console.error(err.message)
+    })
+    .pipe(gulp.dest(DEST))
+})
 
 gulp.task('scripts', () => {
   return gulp
@@ -30,7 +41,7 @@ gulp.task('scripts', () => {
 // Gulp task to minify HTML files
 gulp.task('pages', () => {
   return gulp
-    .src(['./index.html'])
+    .src([path.join(DEST, 'index.html')])
     .pipe(
       htmlmin({
         collapseWhitespace: true,
@@ -65,5 +76,5 @@ gulp.task('clean', () => del([DEST]))
 
 // Gulp task to minify all files
 gulp.task('default', ['clean'], () => {
-  runSequence('styles', 'scripts', 'pages', 'revreplace')
+  runSequence('critical', 'styles', 'scripts', 'pages', 'revreplace')
 })
