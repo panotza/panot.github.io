@@ -166,5 +166,5 @@ function cat (...args) {
 }
 
 function ls (...args) {
-  output('profile contact activities projects')
+  output('profile contact activities')
 }
