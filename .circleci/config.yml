@@ -51,7 +51,7 @@ jobs:
               git rm -rf .
               cd ..
 
-              make build
+              yarn build
               cp -a build/. out/.
 
               echo "panot.me" > CNAME

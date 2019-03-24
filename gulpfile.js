@@ -1,87 +1,68 @@
-'use strict'
-
-const gulp = require('gulp')
-const minify = require('gulp-babel-minify')
-const csso = require('gulp-csso')
-const del = require('del')
-const htmlmin = require('gulp-htmlmin')
-const runSequence = require('run-sequence')
-const rev = require('gulp-rev')
-const revReplace = require('gulp-rev-replace')
 const path = require('path')
-const critical = require('critical').stream
+const gulp = require('gulp')
+const del = require('del')
+const terser = require('gulp-terser')
+const csso = require('gulp-csso')
+const htmlmin = require('gulp-htmlmin')
+const rev = require('gulp-rev')
+const revRewrite = require('gulp-rev-rewrite')
+const revDelete = require('gulp-rev-delete-original')
 
-const DEST = path.join(__dirname, 'build')
+// constants
+const OUT = 'build'
 
-gulp.task('critical', () => {
+// clean assets
+function clean() {
+	return del([OUT])
+}
+
+function script() {
 	return gulp
-		.src('./index.html')
-		.pipe(
-			critical({
-				base: DEST,
-				inline: true,
-				minify: true,
-				css: ['./styles.css'],
-			})
-		)
-		.on('error', err => {
-			console.error(err.message)
-		})
-		.pipe(gulp.dest(DEST))
-})
+		.src('./src/*.js')
+		.pipe(terser())
+		.pipe(gulp.dest(OUT))
+}
 
-gulp.task('scripts', () => {
+function style() {
 	return gulp
-		.src('./script.js')
-		.pipe(minify())
-		.pipe(rev())
-		.pipe(gulp.dest(DEST))
-		.pipe(
-			rev.manifest({
-				cwd: DEST,
-				merge: true, // merge with the existing manifest if one exists
-			})
-		)
-		.pipe(gulp.dest(DEST))
-})
-
-// Gulp task to minify HTML files
-gulp.task('pages', () => {
-	return gulp
-		.src([path.join(DEST, 'index.html')])
-		.pipe(
-			htmlmin({
-				collapseWhitespace: true,
-				removeComments: true,
-			})
-		)
-		.pipe(gulp.dest(DEST))
-})
-
-// Gulp task to minify CSS files
-gulp.task('styles', function() {
-	return gulp
-		.src('./styles.css')
+		.src('./src/*.css')
 		.pipe(csso())
-		.pipe(rev())
-		.pipe(gulp.dest(DEST))
-		.pipe(rev.manifest())
-		.pipe(gulp.dest(DEST))
-})
+		.pipe(gulp.dest(OUT))
+}
 
-// Gulp task to replace revision files in html
-gulp.task('revreplace', () => {
-	const manifest = gulp.src(path.join(DEST, 'rev-manifest.json'))
+function html() {
 	return gulp
-		.src(path.join(DEST, 'index.html'))
-		.pipe(revReplace({ manifest: manifest }))
-		.pipe(gulp.dest(DEST))
-})
+		.src('src/*.html')
+		.pipe(htmlmin({ collapseWhitespace: true }))
+		.pipe(gulp.dest(OUT))
+}
 
-// Clean output directory
-gulp.task('clean', () => del([DEST]))
+function revision() {
+	return gulp
+		.src(path.join(OUT, '**/*.{css,js}'))
+		.pipe(rev())
+		.pipe(revDelete())
+		.pipe(gulp.dest(OUT))
+		.pipe(rev.manifest())
+		.pipe(gulp.dest(OUT))
+}
 
-// Gulp task to minify all files
-gulp.task('default', ['clean'], () => {
-	runSequence('critical', 'styles', 'scripts', 'pages', 'revreplace')
-})
+function revreplace() {
+	const manifest = gulp.src(path.join(OUT, 'rev-manifest.json'))
+
+	return gulp
+		.src(path.join(OUT, '*.html'))
+		.pipe(revRewrite({ manifest }))
+		.pipe(gulp.dest(OUT))
+}
+
+const build = gulp.series(
+	clean,
+	gulp.parallel(script, style, html),
+	revision,
+	revreplace
+)
+
+// export tasks
+exports.clean = clean
+exports.default = build
