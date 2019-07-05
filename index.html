@@ -3,7 +3,7 @@
 		window.onload = function () {
 			r.textContent = 'window loaded'
 			try {
-				liff.init(function (data) {
+				liff.init(function (data, err) {
 					r.textContent = 'lift init'
 					if (err) {
 						r.textContent = err
