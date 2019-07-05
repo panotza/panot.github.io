@@ -5,13 +5,11 @@
 			try {
 				liff.init(function (data, err) {
 					r.textContent = 'lift init'
-					if (err) {
+					try {
+						r.textContent = liff.getAccessToken()
+					} catch (err) {
 						r.textContent = err
-					} else {
-						r.textContent = 'lift init ok'
 					}
-
-					r.textContent = liff.getAccessToken()
 				})
 			} catch (err) {
 				r.textContent = 'lift init error'
