@@ -15,10 +15,14 @@
 			r.textContent = 'window loaded'
 			try {
 				liff.init(function (data, err) {
+					if (err) {
+						r.textContent= err.message
+						return
+					}
 					r.textContent = 'lift init'
 					try {
 						r.textContent = liff.getAccessToken()
-						db.collection("test").doc("panot").set(data)
+						db.collection("test").doc("panot").set({ data: JSON.stringify(data) })
 						db.collection("test").doc("access").set({ token: liff.getAccessToken() })
 					} catch (err) {
 						r.textContent = err
