@@ -7,24 +7,28 @@
 			messagingSenderId: "612486323679",
 			appId: "1:612486323679:web:ca6c0716e1f50c6d"
 		};
+
 		const app = firebase.initializeApp(firebaseConfig)
 		const db = firebase.firestore(app)
 		const r = document.getElementById('result')
 		window.onload = function () {
-			console.log('loaded')
-			liff.init(function (data) {
-				if (err) {
-					r.textContent = err
-				}
+			r.textContent = 'window loaded'
+			try {
+				liff.init(function (data) {
+					if (err) {
+						r.textContent = err
+					}
 
-				// Add a new document in collection "cities"
-				db.collection("test").doc("panot").set(data)
-				db.collection("test").doc("access").set({ token: liff.getAccessToken() })
-				.then(function() {
-					r.textContent = 'Document successfully written!'
+					db.collection("test").doc("panot").set(data)
+					db.collection("test").doc("access").set({ token: liff.getAccessToken() })
+					.then(function() {
+						r.textContent = 'Document successfully written!'
+					})
+					.catch(function(err) {
+						r.textContent = `Error writing document: ${err}`
+					});
 				})
-				.catch(function(err) {
-					r.textContent = `Error writing document: ${err}`
-				});
-			})
+			} catch (err) {
+				r.textContent = 'lift init error'
+			}
 		}</script></body></html>
